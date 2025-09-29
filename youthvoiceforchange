@@ -139,7 +139,7 @@
 <body>
 
   <header>
-    <img src="youth.jpg"> alt="
+    <img src="youth.jpg" alt="Youth Voices for Change">
     <div class="lang-switch">
       <button onclick="setLang('ka')" id="btn-ka" class="active">ქართული</button>
       <button onclick="setLang('hy')" id="btn-hy">Հայերեն</button>
@@ -234,3 +234,9 @@
   </script>
 </body>
 </html>
+
+
+
+
+
+
