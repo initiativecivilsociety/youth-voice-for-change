@@ -19,11 +19,12 @@
       position: relative;
     }
     header img {
-  width: 100%;
-  max-height: 800px;
-  object-fit: cover;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      width: 100%;
+      max-height: 800px;
+      object-fit: cover;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      display: block;
     }
     .lang-switch {
       position: absolute;
@@ -108,6 +109,7 @@
       margin-top: 15px;
       line-height: 1.6;
       font-size: 14px;
+      white-space: pre-wrap; /* preserve whitespace/newlines */
     }
     footer {
       background: #333;
@@ -139,48 +141,53 @@
 <body>
 
   <header>
-    <img src="youth.jpg" alt="Youth Voices for Change">
-    <div class="lang-switch">
-      <button onclick="setLang('ka')" id="btn-ka" class="active">ქართული</button>
-      <button onclick="setLang('hy')" id="btn-hy">Հայերեն</button>
-      <button onclick="setLang('az')" id="btn-az">Azərbaycan</button>
+    <!-- FIXED: proper img tag and alt + lazy loading -->
+    <img src="youth.jpg" alt="Youth Voices for Change" loading="lazy">
+
+    <div class="lang-switch" role="tablist" aria-label="Language switch">
+      <button id="btn-ka" type="button" class="active" aria-pressed="true" onclick="setLang('ka')">ქართული</button>
+      <button id="btn-hy" type="button" aria-pressed="false" onclick="setLang('hy')">Հայերեն</button>
+      <button id="btn-az" type="button" aria-pressed="false" onclick="setLang('az')">Azərbaycan</button>
     </div>
   </header>
 
-  <section class="intro">
-    <h2 id="main-title">ახალგაზრდების ხმა ცვლილებებისათვის</h2>
-    <p id="main-text">
-      მოგესალმებით ჩვენს ახალ სამენოვან ონლაინ პლატფორმაზე! ჩვენი მიზანია ახალგაზრდებისთვის საგანმანათლებლო შესაძლებლობებისა და პროექტების შესახებ ინფორმაციის გაზიარება.
-    </p>
-    <button onclick="toggleMore()">გაიგე მეტი</button>
-    <div class="hidden-text" id="more-text"></div>
-  </section>
+  <main>
+    <section class="intro">
+      <h2 id="main-title">ახალგაზრდების ხმა ცვლილებებისათვის</h2>
+      <p id="main-text">
+        მოგესალმებით ჩვენს ახალ სამენოვან ონლაინ პლატფორმაზე! ჩვენი მიზანია ახალგაზრდებისთვის საგანმანათლებლო შესაძლებლობებისა და პროექტების შესახებ ინფორმაციის გაზიარება.
+      </p>
+      <button id="more-toggle" type="button" onclick="toggleMore()">გაიგე მეტი</button>
+      <div class="hidden-text" id="more-text" aria-hidden="true"></div>
+    </section>
 
-  <section class="cards">
-    <div class="card">
-      <h3>ბლოკი 1</h3>
-      <button class="accordion-btn" onclick="toggleAccordion()">იხილე ტექსტი</button>
-      <div class="accordion-content" id="accordion1"></div>
-    </div>
-    <div class="card">
-      <h3>ბლოკი 2</h3>
-      <p id="block2">ქართული ტექსტი ბლოკისთვის.</p>
-    </div>
-    <div class="card">
-      <h3>ბლოკი 3</h3>
-      <p id="block3">ქართული ტექსტი ბლოკისთვის.</p>
-    </div>
-  </section>
+    <section class="cards">
+      <div class="card">
+        <h3 id="card1-title">ბლოკი 1</h3>
+        <button id="accordion-toggle" class="accordion-btn" type="button" aria-expanded="false" aria-controls="accordion1" onclick="toggleAccordion()">იხილე ტექსტი</button>
+        <div class="accordion-content" id="accordion1"></div>
+      </div>
+      <div class="card">
+        <h3>ბლოკი 2</h3>
+        <p id="block2">ქართული ტექსტი ბლოკისთვის.</p>
+      </div>
+      <div class="card">
+        <h3>ბლოკი 3</h3>
+        <p id="block3">ქართული ტექსტი ბლოკისთვის.</p>
+      </div>
+    </section>
+  </main>
 
   <footer>
     <p>
       The platform was created within a project implemented by "Initiative for Civil Society",
       with the support of the European Youth Foundation of the Council of Europe. Any information published on the platform belongs to the authors and may not necessarily reflect the views of the Council of Europe or the European Youth Foundation.
     </p>
-    <p>Email: initiativecivilsociety@gmail.com</p>
+    <p>Email: <a href="mailto:initiativecivilsociety@gmail.com">initiativecivilsociety@gmail.com</a></p>
     <div class="social">
-      <a href="https://www.facebook.com/profile.php?id=100067001153111" target="_blank"><i class="fab fa-facebook"></i></a>
-      <a href="https://www.instagram.com/vfc1.6/" target="_blank"><i class="fab fa-instagram"></i></a>
+      <!-- FIXED: add rel for security when using target="_blank" -->
+      <a href="https://www.facebook.com/profile.php?id=100067001153111" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook"></i></a>
+      <a href="https://www.instagram.com/vfc1.6/" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
     </div>
   </footer>
 
@@ -190,53 +197,84 @@
         title: "ახალგაზრდების ხმა ცვლილებებისათვის",
         main: "მოგესალმებით ჩვენს ახალ სამენოვან ონლაინ პლატფორმაზე! ჩვენი მიზანია ახალგაზრდებისთვის საგანმანათლებლო შესაძლებლობებისა და პროექტების შესახებ ინფორმაციის გაზიარება.",
         more: "პლატფორმა მოგაწვდით სანდო ინფორმაციას, რაც დაგეხმარებათ ინფორმირებული გადაწყვეტილებების მიღებაში. აქ ნახავთ ტრენინგების, სემინარების, ბანაკებისა და სხვა ინიციატივების სიახლეებს.",
-        block1: "ბოლნისი პატარა, მაგრამ მრავალფეროვნებით მდიდარი. თუმცა ახალგაზრდებისთვის ცხოვრება აქ მარტივი არ არის. ბევრ მათგანს არ აქვთ შესაძლებლობა გადაწყვეტილების მიღების პროცესში ჩაერთონ, ზოგი ენობრივი ბარიერის და დისკრიმინაციის გამო აქტივობებში ვერ მონაწილეობს, ზოგისთვის კი უბრალოდ არ არსებობს ადგილი, სადაც ერთმანეთთან საუბარი და აზრების გაზიარებას შეძლებენ.\nჩვენი პროექტი ”Youth Voices for Change” სწორედ ამის შეცვლის სურვილით შეიქმნა. გვსურდა კიდევ უფრო მეტი გაეგოთ ახალგაზრდებს მათი უფლებებისა და ადგილობრივი თვითმმართველობის შესახებ, ესწავლათ თუ როგორ მიიღონ მონაწილეობა გადაწყვეტილებების მიღებების პროცესში და როგორ გამოიყენონ თავიანთი უფლებები. რაც მთავარია მისცემოდათ შესაძლებლობა ცოდნის გააზიარებებისა თანატოლებისთვის, რათა კიდევ მეტი ახალგაზრდული ხმა ისმოდეს ძლიერად.\nეს ყველაფერი იმისთვის, რომ ახალგაზრდები უფრო აქტიურად იყვნენ ჩართულნი საკუთარ ქალაქსა და სოფელში და თავიანთი იდეებითა და ენერგიით აქციონ იგი უკეთეს ადგილად ყველასთვის."
+        block1: "ბოლნისი პატარა, მაგრამ მრავალფეროვნებით მდიდარი. თუმცა ახალგაზრდებისთვის ცხოვრება აქ მარტივი არ არის. ბევრ მათგანს არ აქვთ შესაძლებლობა გადაწყვეტილების მიღების პროცესში ჩაერთონ, ზოგი ენობრივი ბარიერის და დისკრიმინაციის გამო აქტივობებში ვერ მონაწილეობს, ზოგისთვის კი უბრალოდ არ არსებობს ადგილი, სადაც ერთმანეთთან საუბარი და აზრების გაზიარებას შეძლებენ.\n\nჩვენი პროექტი \"Youth Voices for Change\" სწორედ ამის შეცვლის სურვილით შეიქმნა. გვსურდა კიდევ უფრო მეტი გაეგოთ ახალგაზრდებს მათი უფლებებისა და ადგილობრივი თვითმმართველობის შესახებ, ესწავლათ თუ როგორ მიიღონ მონაწილეობა გადაწყვეტილებების მიღების პროცესში და როგორ გამოიყენონ თავიანთი უფლებები. რაც მთავარია მისცემოდათ შესაძლებლობა ცოდნის გაზიარების თანატოლებისთვის, რათა კიდევ მეტი ახალგაზრდული ხმა ისმოდეს ძლიერად.\n\nეს ყველაფერი იმისთვის, რომ ახალგაზრდები უფრო აქტიურად იყვნენ ჩართულნი საკუთარ ქალაქსა და სოფელში და თავიანთი იდეებითა და ენერგიით აქციონ იგი უკეთეს ადგილად ყველასთვის.",
+        moreBtn: "გაიგე მეტი",
+        accordionBtn: "იხილე ტექსტი"
       },
       hy: {
         title: "Երիտասարդների ձայնը փոփոխությունների համար",
         main: "Բարի գալուստ մեր եռալեզու առցանց հարթակ։ Մեր նպատակն է երիտասարդներին տրամադրել տեղեկատվություն կրթական հնարավորությունների և նախագծերի մասին։",
         more: "Հարթակը տրամադրում է հուսալի տեղեկատվություն, որը կօգնի ձեզ կայացնել տեղեկացված որոշումներ։ Այստեղ դուք կգտնեք նորություններ դասընթացների, սեմինարների, ճամբարների և այլ նախաձեռնությունների մասին։",
-        block1: "Բոլնիսը փոքր է, բայց հարուստ բազմազանությամբ։ Սակայն երիտասարդների համար այստեղ ապրելը հեշտ չէ։ Նրանցից շատերը հնարավորություն չունեն մասնակցելու որոշումների ընդունման գործընթացին, ոմանք՝ լեզվական խոչընդոտների և խտրականության պատճառով չեն կարող մասնակցել գործունեություններին, իսկ ոմանց համար պարզապես չկա այնպիսի վայր, որտեղ կարողանան շփվել միմյանց հետ և կիսվել մտքերով։\nՄեր «Youth Voices for Change» նախագիծը ստեղծվել է հենց սա փոխելու ցանկությամբ։ Մենք ցանկանում էինք, որ երիտասարդները ավելի շատ տեղեկություն ունենան իրենց իրավունքների և տեղական ինքնակառավարման մասին, սովորեն, թե ինչպես մասնակցեն որոշումների ընդունման գործընթացին և ինչպես օգտագործեն իրենց իրավունքները։ Ամենակարևորը՝ նրանց հնարավորություն տալ իրենց գիտելիքները կիսելու հասակակիցների հետ, որպեսզի ավելի շատ երիտասարդների ձայն հնչի ուժեղ։\nԱյս ամենը արվում է նրա համար, որպեսզի երիտասարդները ավելի ակտիվ մասնակցեն իրենց քաղաքում և գյուղում և իրենց գաղափարներով ու էներգիայով այն դարձնեն ավելի լավ վայր բոլորի համար։"
+        block1: "Բոլնիսը փոքր է, բայց հարուստ բազմազանությամբ։ Սակայն երիտասարդների համար այստեղ ապրելը հեշտ չէ։ Նրանցից շատերը հնարավորություն չունեն մասնակցելու որոշումների ընդունման գործընթացին, ոմանք՝ լեզվական խոչընդոտների և խտրականության պատճառով չեն կարող մասնակցել գործունեություններին, իսկ ոմանց համար պարզապես չկա այնպիսի վայր, որտեղ կարողանան շփվել միմյանց հետ և կիսվել մտքերով։\n\nՄեր «Youth Voices for Change» նախագիծը ստեղծվել է հենց սա փոխելու ցանկությամբ։ Մենք ցանկանում էինք, որ երիտասարդները ավելի շատ տեղեկություն ունենան իրենց իրավունքների և տեղական ինքնակառավարման մասին, սովորեն, թե ինչպես մասնակցեն որոշումների ընդունման գործընթացին և ինչպես օգտագործեն իրենց իրավունքները։ Ամենակարևորը՝ նրանց հնարավորություն տալ իրենց գիտելիքները կիսելու հասակակիցների հետ, որպեսզի ավելի շատ երիտասարդների ձայն հնչի ուժեղ։\n\nԱյս ամենը արվում է նրա համար, որպեսզի երիտասարդները ավելի ակտիվ մասնակցեն իրենց քաղաքում և գյուղում և իրենց գաղափարներով ու էներգիայով այն դարձնեն ավելի լավ վայր բոլորի համար։",
+        moreBtn: "Իմանալ ավելին",
+        accordionBtn: "Տեսնել տեքստը"
       },
       az: {
         title: "Dəyişiklik üçün gənclərin səsi",
         main: "Yeni üçdilli onlayn platformamıza xoş gəlmisiniz! Məqsədimiz gənclərə təhsil imkanları və layihələr haqqında məlumat verməkdir.",
         more: "Platforma sizə etibarlı məlumat təqdim edəcək, məlumatlı qərarlar qəbul etməyə kömək edəcək. Burada təlimlər, seminarlar, düşərgələr və digər təşəbbüslər haqqında yenilikləri tapa bilərsiniz.",
-        block1: "Bolnisi kiçik olsa da, çoxşaxəli və zəngindir. Lakin gənclər üçün burada həyat asan deyil. Onların bir çoxunun qərar qəbuletmə prosesinə qoşulmaq imkanı yoxdur, bəziləri dil baryeri və diskriminasiya səbəbindən fəaliyyətlərdə iştirak edə bilmir, bəziləri üçün isə sadəcə bir məkan yoxdur ki, orada bir-biri ilə danışıb fikirlərini bölüşsünlər.\nBizim layihəmiz “Youth Voices for Change” məhz bunu dəyişmək məqsədilə yaradılıb. İstədik ki, gənclər öz hüquqları və yerli özünüidarəetmə haqqında daha çox bilsinlər, öyrənsinlər ki, qərar qəbuletmə prosesində necə iştirak etsinlər və öz hüquqlarından necə istifadə etsinlər. Ən əsası isə onlara biliklərini həmyaşıdları ilə bölüşmək imkanı verilsin ki, daha çox gəncin səsi güclü eşidilsin.\nBütün bunlar isə ona görədir ki, gənclər öz şəhər və kəndlərində daha fəal iştirak etsinlər və öz ideya və enerjiləri ilə onları hamı üçün daha yaxşı bir məkana çevirsinlər."
+        block1: "Bolnisi kiçik olsa da, çoxşaxəli və zəngindir. Lakin gənclər üçün burada həyat asan deyil. Onların bir çoxunun qərar qəbuletmə prosesinə qoşulmaq imkanı yoxdur, bəziləri dil baryeri və diskriminasiya səbəbindən fəaliyyətlərdə iştirak edə bilmir, bəziləri üçün isə sadəcə bir məkan yoxdur ki, orada bir-biri ilə danışıb fikirlərini bölüşsünlər.\n\nBizim layihəmiz \"Youth Voices for Change\" məhz bunu dəyişmək məqsədilə yaradılıb. İstədik ki, gənclər öz hüquqları və yerli özünüidarəetmə haqqında daha çox bilsinlər, öyrənsinlər ki, qərar qəbuletmə prosesində necə iştirak etsinlər və öz hüquqlarından necə istifadə etsinlər. Ən əsası isə onlara biliklərini həmyaşıdları ilə bölüşmək imkanı verilsin ki, daha çox gəncin səsi güclü eşidilsin.\n\nBütün bunlar isə ona görədir ki, gənclər öz şəhər və kəndlərində daha fəal iştirak etsinlər və öz ideya və enerjiləri ilə onları hamı üçün daha yaxşı bir məkana çevirsinlər.",
+        moreBtn: "Daha çox",
+        accordionBtn: "Mətni gör"
       }
     };
+
+    // helper to convert newline sequences into <br> for simple formatting
+    function nl2br(str) {
+      return String(str).replace(/\n/g, '<br>');
+    }
 
     let currentLang = "ka";
 
     function setLang(lang) {
       currentLang = lang;
+      // set page language attribute for accessibility
+      document.documentElement.lang = lang;
+
       document.getElementById("main-title").innerText = texts[lang].title;
       document.getElementById("main-text").innerText = texts[lang].main;
-      document.getElementById("more-text").innerText = texts[lang].more;
-      document.getElementById("accordion1").innerText = texts[lang].block1;
 
-      document.querySelectorAll(".lang-switch button").forEach(btn => btn.classList.remove("active"));
-      document.getElementById("btn-" + lang).classList.add("active");
+      // use innerHTML when we want to keep newlines as breaks
+      document.getElementById("more-text").innerHTML = nl2br(texts[lang].more);
+      document.getElementById("accordion1").innerHTML = nl2br(texts[lang].block1);
+
+      // update localized button labels
+      const moreBtn = document.getElementById('more-toggle');
+      const accBtn = document.getElementById('accordion-toggle');
+      if (moreBtn) moreBtn.innerText = texts[lang].moreBtn;
+      if (accBtn) accBtn.innerText = texts[lang].accordionBtn;
+
+      // update active state on language buttons (and aria-pressed)
+      document.querySelectorAll('.lang-switch button').forEach(btn => {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-pressed', 'false');
+      });
+      const activeBtn = document.getElementById('btn-' + lang);
+      if (activeBtn) {
+        activeBtn.classList.add('active');
+        activeBtn.setAttribute('aria-pressed', 'true');
+      }
     }
 
     function toggleMore() {
       const moreText = document.getElementById("more-text");
-      moreText.style.display = moreText.style.display === "block" ? "none" : "block";
+      const btn = document.getElementById('more-toggle');
+      const isOpen = moreText.style.display === 'block';
+      moreText.style.display = isOpen ? 'none' : 'block';
+      moreText.setAttribute('aria-hidden', String(isOpen));
+      if (btn) btn.setAttribute('aria-expanded', String(!isOpen));
     }
 
     function toggleAccordion() {
       const acc = document.getElementById("accordion1");
-      acc.style.display = acc.style.display === "block" ? "none" : "block";
+      const btn = document.getElementById('accordion-toggle');
+      const isOpen = acc.style.display === 'block';
+      acc.style.display = isOpen ? 'none' : 'block';
+      if (btn) btn.setAttribute('aria-expanded', String(!isOpen));
     }
 
-    // Init default
-    setLang("ka");
+    // Init default after DOM ready
+    document.addEventListener('DOMContentLoaded', () => setLang('ka'));
   </script>
 </body>
 </html>
-
-
-
-
-
-
